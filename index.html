@@ -25,17 +25,19 @@
         position: absolute;
         opacity: 0;
         animation: breathe 4s infinite;
-        /* transform: rotate(45deg); */
       }
+
       @keyframes breathe {
         0%,
         100% {
           opacity: 0;
-          transform: scale(0.5);
+          scale: 0.5;
+          rotate: 45deg;
         }
         50% {
           opacity: 1;
-          transform: scale(1);
+          scale: 1;
+          rotate: 0deg;
         }
       }
     </style>
