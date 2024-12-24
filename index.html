@@ -21,21 +21,19 @@
         position: relative;
       }
       .circle {
-        border-radius: 0%;
+        border-radius: 20%;
         position: absolute;
         opacity: 0;
         animation: breathe 4s infinite;
-        transform: scale(0);
+        /* transform: rotate(45deg); */
       }
       @keyframes breathe {
         0%,
         100% {
           opacity: 0;
-          transform: scale(0);
         }
         50% {
           opacity: 1;
-          transform: scale(1);
         }
       }
     </style>
