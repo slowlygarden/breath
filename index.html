@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .mask {
+        width: 200px;
+        height: 200px;
+        border-radius: 0%;
+        /* overflow: hidden; */
+        position: relative;
+      }
+      .circle {
+        border-radius: 0%;
+        position: absolute;
+        opacity: 0;
+        animation: breathe 4s infinite;
+        transform: scale(0);
+      }
+      @keyframes breathe {
+        0%,
+        100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="mask">
+      <script>
+        const colors = [
+          "#946AA9",
+          "#E95B51",
+          "#EA8A1A",
+          "#FBC51B",
+          "#6EB879",
+          "#1F96CE",
+        ];
+
+        // const colors = [
+        //   "#5592D1",
+        //   "#103677",
+        //   "#0588AE",
+        //   "#159BB8",
+        //   "#007C8F",
+        //   "#14ABBC",
+        //   "#006C94",
+        // ];
+
+        // const colors = [
+        //   "#6DB326",
+        //   "#32A361",
+        //   "#156B5C",
+        //   "#40A940",
+        //   "#199147",
+        //   "#0C5D78",
+        // ];
+
+        // const colors = [
+        //   "#45A0CD",
+        //   "#FC522E",
+        //   "#FFAD47",
+        //   "#ED90AF",
+        //   "#486CA8",
+        //   "#9FC554",
+        //   "#579B44",
+        //   "#7CD9CF",
+        //   "#3A7D5C",
+        //   "#FCDC6D",
+        // ];
+
+        function getRandomColor() {
+          return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        // function getRandomBorderRadius() {
+        //   return `${Math.floor(Math.random() * 50)}%`;
+        // }
+
+        function createCircles(
+          numCircles,
+          size,
+          offset,
+          maskWidth,
+          maskHeight
+        ) {
+          const circlesPerRow = Math.ceil(Math.sqrt(numCircles));
+          const mask = document.querySelector(".mask");
+          const totalWidth = circlesPerRow * offset;
+          const totalHeight = circlesPerRow * offset;
+          const startX = (maskWidth - totalWidth) / 2;
+          const startY = (maskHeight - totalHeight) / 2;
+          const centerX = maskWidth / 2;
+          const centerY = maskHeight / 2;
+
+          for (let i = 0; i < numCircles; i++) {
+            const circle = document.createElement("div");
+            circle.style.width = `${size}px`;
+            circle.style.height = `${size}px`;
+            circle.style.backgroundColor = getRandomColor();
+            // circle.style.borderRadius = getRandomBorderRadius();
+
+            const row = Math.floor(i / circlesPerRow);
+            const col = i % circlesPerRow;
+            const x = startX + col * offset;
+            const y = startY + row * offset;
+            circle.style.top = `${y}px`;
+            circle.style.left = `${x}px`;
+
+            const distanceFromCenter = Math.sqrt(
+              Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
+            );
+            const maxDistance = Math.sqrt(
+              Math.pow(centerX, 2) + Math.pow(centerY, 2)
+            );
+            const opacityFactor = distanceFromCenter / maxDistance;
+
+            // Circles closer to the center have shorter delay and longer duration
+            const animationDelay = Math.random() * 2 * (1 - opacityFactor);
+            const animationDuration = 4 + 2 * opacityFactor;
+
+            circle.style.animationDelay = `${animationDelay}s`;
+            circle.style.animationDuration = `${animationDuration}s`;
+            circle.classList.add("circle");
+            mask.appendChild(circle);
+          }
+        }
+
+        createCircles(506, 10, 20, 200, 200);
+      </script>
+    </div>
+  </body>
+</html>
