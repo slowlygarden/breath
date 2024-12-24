@@ -13,37 +13,37 @@
         height: 100vh;
         margin: 0;
       }
-      .mask {
+      .container {
         width: 200px;
-        height: 200px;
-        border-radius: 0%;
-        /* overflow: hidden; */
+        height: 400px;
         position: relative;
       }
-      .circle {
-        border-radius: 20%;
+      .dot {
         position: absolute;
         opacity: 0;
         animation: breathe 4s infinite;
+        border-radius: 20%;
+        width: 10px;
+        height: 10px;
       }
 
       @keyframes breathe {
         0%,
         100% {
           opacity: 0;
-          scale: 0.5;
-          rotate: 45deg;
+          /* scale: 0.5; */
+          /* border-radius: 50%; */
         }
         50% {
           opacity: 1;
-          scale: 1;
-          rotate: 0deg;
+          /* scale: 1; */
+          /* border-radius: 20%; */
         }
       }
     </style>
   </head>
   <body>
-    <div class="mask">
+    <div class="container">
       <script>
         const colors = [
           "#946AA9",
@@ -90,39 +90,22 @@
           return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        // function getRandomBorderRadius() {
-        //   return `${Math.floor(Math.random() * 50)}%`;
-        // }
-
-        function createCircles(
-          numCircles,
-          size,
-          offset,
-          maskWidth,
-          maskHeight
-        ) {
-          const circlesPerRow = Math.ceil(Math.sqrt(numCircles));
-          const mask = document.querySelector(".mask");
-          const totalWidth = circlesPerRow * offset;
-          const totalHeight = circlesPerRow * offset;
-          const startX = (maskWidth - totalWidth) / 2;
-          const startY = (maskHeight - totalHeight) / 2;
+        function createDots(num, size, offset, maskWidth, maskHeight) {
+          const dotsPerRow = 10;
+          const container = document.querySelector(".container");
           const centerX = maskWidth / 2;
           const centerY = maskHeight / 2;
 
-          for (let i = 0; i < numCircles; i++) {
-            const circle = document.createElement("div");
-            circle.style.width = `${size}px`;
-            circle.style.height = `${size}px`;
-            circle.style.backgroundColor = getRandomColor();
-            // circle.style.borderRadius = getRandomBorderRadius();
+          for (let i = 0; i < num; i++) {
+            const dot = document.createElement("div");
+            dot.style.backgroundColor = getRandomColor();
 
-            const row = Math.floor(i / circlesPerRow);
-            const col = i % circlesPerRow;
-            const x = startX + col * offset;
-            const y = startY + row * offset;
-            circle.style.top = `${y}px`;
-            circle.style.left = `${x}px`;
+            const row = Math.floor(i / dotsPerRow);
+            const col = i % dotsPerRow;
+            const x = col * offset;
+            const y = row * offset;
+            dot.style.top = `${y}px`;
+            dot.style.left = `${x}px`;
 
             const distanceFromCenter = Math.sqrt(
               Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
@@ -132,18 +115,18 @@
             );
             const opacityFactor = distanceFromCenter / maxDistance;
 
-            // Circles closer to the center have shorter delay and longer duration
+            // dots closer to the center have shorter delay and longer duration
             const animationDelay = Math.random() * 2 * (1 - opacityFactor);
             const animationDuration = 4 + 2 * opacityFactor;
 
-            circle.style.animationDelay = `${animationDelay}s`;
-            circle.style.animationDuration = `${animationDuration}s`;
-            circle.classList.add("circle");
-            mask.appendChild(circle);
+            dot.style.animationDelay = `${animationDelay}s`;
+            dot.style.animationDuration = `${animationDuration}s`;
+            dot.classList.add("dot");
+            container.appendChild(dot);
           }
         }
 
-        createCircles(506, 10, 20, 200, 200);
+        createDots(200, 10, 20, 200, 200);
       </script>
     </div>
   </body>
