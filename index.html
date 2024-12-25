@@ -13,46 +13,40 @@
         height: 100vh;
         margin: 0;
       }
-      .mask {
+      .container {
         width: 200px;
-        height: 200px;
-        border-radius: 0%;
-        /* overflow: hidden; */
         position: relative;
+
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
       }
-
-      .circle {
-        border-radius: 20%;
-        position: absolute;
-        opacity: 0;
-        animation: breathe 4s infinite;
-        /* transform: rotate(45deg); */
-      }
-
       .dot {
-        /* position: absolute; */
         opacity: 0;
         animation: breathe 4s infinite;
-        border-radius: 20%;
-        width: 20px;
+        border-radius: 30%;
+        width: 10px;
         aspect-ratio: 1;
+        rotate: 45deg;
       }
+
       @keyframes breathe {
         0%,
         100% {
           opacity: 0;
+          /* scale: 0.5; */
+          /* border-radius: 50%; */
         }
         50% {
           opacity: 1;
+          /* scale: 1; */
+          /* border-radius: 20%; */
         }
       }
     </style>
   </head>
   <body>
-    <div class="mask">
+    <div class="container">
       <script>
         // const colors = [
         //   "#946AA9",
@@ -73,58 +67,57 @@
         //   "#006C94",
         // ];
 
-        // const colors = ["#6DB326", "#32A361", "#40A940", "#199147"];
+        // const colors = [
+        //   "#6DB326",
+        //   "#32A361",
+        //   "#156B5C",
+        //   "#40A940",
+        //   "#199147",
+        //   "#0C5D78",
+        // ];
+
+        // const colors = [
+        //   "#45A0CD",
+        //   "#FC522E",
+        //   "#FFAD47",
+        //   "#ED90AF",
+        //   "#486CA8",
+        //   "#9FC554",
+        //   "#579B44",
+        //   "#7CD9CF",
+        //   "#3A7D5C",
+        //   "#FCDC6D",
+        // ];
 
         const colors = [
-          "#45A0CD",
-          "#FC522E",
-          "#FFAD47",
-          "#ED90AF",
-          "#486CA8",
-          "#9FC554",
-          "#579B44",
-          "#7CD9CF",
-          "#3A7D5C",
-          "#FCDC6D",
+          "#D14D41",
+          "#DA702C",
+          "#D0A215",
+          "#879A39",
+          "#3AA99F",
+          "#4385BE",
+          "#8B7EC8",
+          "#CE5D97",
         ];
 
         function getRandomColor() {
           return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        // function getRandomBorderRadius() {
-        //   return `${Math.floor(Math.random() * 50)}%`;
-        // }
-
-        function createCircles(
-          numCircles,
-          size,
-          offset,
-          maskWidth,
-          maskHeight
-        ) {
-          const circlesPerRow = Math.ceil(Math.sqrt(numCircles));
-          const mask = document.querySelector(".mask");
-          const totalWidth = circlesPerRow * offset;
-          const totalHeight = circlesPerRow * offset;
-          const startX = (maskWidth - totalWidth) / 2;
-          const startY = (maskHeight - totalHeight) / 2;
+        function createDots(num, offset, maskWidth, maskHeight) {
+          const dotsPerRow = 10;
+          const container = document.querySelector(".container");
           const centerX = maskWidth / 2;
           const centerY = maskHeight / 2;
 
-          for (let i = 0; i < numCircles; i++) {
-            const circle = document.createElement("div");
-            circle.style.width = `${size}px`;
-            circle.style.height = `${size}px`;
-            circle.style.backgroundColor = getRandomColor();
-            // circle.style.borderRadius = getRandomBorderRadius();
+          for (let i = 0; i < num; i++) {
+            const dot = document.createElement("div");
+            dot.style.backgroundColor = getRandomColor();
 
-            const row = Math.floor(i / circlesPerRow);
-            const col = i % circlesPerRow;
-            const x = startX + col * offset;
-            const y = startY + row * offset;
-            circle.style.top = `${y}px`;
-            circle.style.left = `${x}px`;
+            const row = Math.floor(i / dotsPerRow);
+            const col = i % dotsPerRow;
+            const x = col * offset;
+            const y = row * offset;
 
             const distanceFromCenter = Math.sqrt(
               Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)
@@ -134,18 +127,18 @@
             );
             const opacityFactor = distanceFromCenter / maxDistance;
 
-            // Circles closer to the center have shorter delay and longer duration
+            // dots closer to the center have shorter delay and longer duration
             const animationDelay = Math.random() * 2 * (1 - opacityFactor);
             const animationDuration = 4 + 2 * opacityFactor;
 
-            circle.style.animationDelay = `${animationDelay}s`;
-            circle.style.animationDuration = `${animationDuration}s`;
-            circle.classList.add("circle");
-            mask.appendChild(circle);
+            dot.style.animationDelay = `${animationDelay}s`;
+            dot.style.animationDuration = `${animationDuration}s`;
+            dot.classList.add("dot");
+            container.appendChild(dot);
           }
         }
 
-        createCircles(506, 10, 20, 200, 200);
+        createDots(100, 20, 200, 200);
       </script>
     </div>
   </body>
